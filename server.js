@@ -19,20 +19,25 @@ const io = require('socket.io')(server);
 // var currentUser = "";
 var messages = [];
 var broadcast_word = "";
-var broadcast_theme ="";
+var broadcast_theme = "";
 var broadcast_answer = "";
+var users = [];
 io.on('connection', function (socket) { //2
     console.log(io.engine.clientsCount);
     //io.engine.clientsCount == 1
     socket.on('got_a_new_user', function (data) {
-        if ( broadcast_word === "") {
+        if (data != null || data != "") {
+            users.push(data);
+            console.log("user pushed to the array")
+        }
+        if (broadcast_word === "" && users.length == 1) {
             socket.emit('game_creator', data);
         }
         socket.broadcast.emit('new_user_join', data);
     })
 
     socket.on('got_a_new_word', function (data) {
-        console.log(data);
+        console.log(data, "newword created");
         io.emit('new_word_created', data);
         broadcast_word = data;
     })
@@ -55,15 +60,13 @@ io.on('connection', function (socket) { //2
         io.emit('broad', messages);
     })
 
-    socket.on('correct_answer', function(data,user)
-    {
+    socket.on('correct_answer', function (data, user) {
         var message = user + ' got it right: ' + data;
         // messages.push(message);
         io.emit('correct_answer', message);
     })
 
-    socket.on('incorrect_answer', function(data,user)
-    {
+    socket.on('incorrect_answer', function (data, user) {
         var message = user + ' got it wrong: ' + data;
         messages.push(message);
         io.emit('incorrect_answer', messages);

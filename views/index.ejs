@@ -45,7 +45,7 @@
             $('form').submit(function (e) {
                 e.preventDefault();
                 var message = $('form').serializeArray();
-                $('#message').val("");
+                $('#msg').val("");
                 socket.emit('message', user, message);
             });
 
@@ -189,7 +189,7 @@
                 <form id="message" method="post">
                     <div class="row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" id="message" name="message">
+                            <input type="text" class="form-control" id="msg" name="message">
                         </div>
                     </div>
                     <div class="row">
