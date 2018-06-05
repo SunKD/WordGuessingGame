@@ -29,6 +29,7 @@ io.on('connection', function (socket) { //2
         if (data != null || data != "") {
             users.push(data);
             console.log("user pushed to the array")
+            console.log(users)
         }
         if (broadcast_word === "" && users.length == 1) {
             socket.emit('game_creator', data);
